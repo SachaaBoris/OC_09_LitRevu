@@ -1,19 +1,18 @@
-{% extends "feed/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
 Feed
 {% endblock %}
 
 {% block content %}
-<div class="py-2">
-    <div class="container text-center">
-        <h1 class="visually-hidden">Feed</h1>
-        <a href="{% url 'ticket-review-create'%}" class="btn btn-primary btn-outline btn-lg me-5" title="Create a review">Create a Review</a>
-        <a href="{% url 'ticket-create' %}" class="btn btn-primary btn-outline btn-lg" title="Request a review">Request a Review</a>
-    </div>
-</div>
-
-<section class="d-flex min-vh-100">
+<section class="min-vh-100">
+	<div class="py-2">
+		<div class="container text-center">
+			<h1 class="visually-hidden">Feed</h1>
+			<a href="{% url 'ticket-review-create'%}" class="btn btn-primary btn-outline btn-lg me-5" title="Create a review">Create a Review</a>
+			<a href="{% url 'ticket-create' %}" class="btn btn-primary btn-outline btn-lg" title="Request a review">Request a Review</a>
+		</div>
+	</div>
     <div class="container mt-0">
         <section class="py-5">
             <div class="container text-center">

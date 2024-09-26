@@ -1,53 +1,50 @@
-{% extends 'feed/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Abonnements{% endblock %}
 
 {% block content %}
-<section class="hero is-fullheight is-primary">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <div class="columns is-centered">
-                <div class="column is-half">
+<section class="min-vh-100">
+    <div class="d-flex align-items-center h-100">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
 
-                {% if messages %}
-                    <div class="container" style="margin-bottom: 15px;">
+                    {% if messages %}
+                    <div class="container mb-3">
                         {% for message in messages %}
-                            <!--The following 'div' element will display messages dynamically based on the provided message tags.
-                                Each message can have different styling, such as 'error' or 'success'.-->
-                            <div class="notification {% if message.tags %}is-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}">
-                            <button class="delete"></button>
+                        <!-- Les messages seront affichés ici avec la classe correspondante (danger, success, etc.). -->
+                        <div class="alert {% if message.tags %}alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             {{ message }}
                         </div>
                         {% endfor %}
                     </div>
                     {% endif %}
 
-                    <!-- 1st Section: Follow Other Users -->
-                    <h1 class="title has-text-grey-darker">Follow Other Users</h1>
-                    <div class="box">
+                    <!-- 1ère Section: Suivre d'autres utilisateurs -->
+                    <h1 class="text-dark">Follow Other Users</h1>
+                    <div class="card p-4">
                         <form method="post" action="{% url 'follow-user' %}">
                             {% csrf_token %}
-                            <div class="field">
-                                <label class="label" for="username_to_follow">Username</label>
-                                <div class="control has-icons-left">
-                                    <input id="username_to_follow" class="input" type="text" placeholder="Username" name="username_to_follow" required>
-                                    <span class="icon is-small is-left">
+                            <div class="mb-3">
+                                <label class="form-label" for="username_to_follow">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
                                         <i class="fas fa-user"></i>
                                     </span>
+                                    <input id="username_to_follow" class="form-control" type="text" placeholder="Username" name="username_to_follow" required>
                                 </div>
                             </div>
-                            <div class="field">
-                                <div class="control">
-                                    <button type="submit" class="button is-info is-fullwidth">Follow</button>
-                                </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-info">Follow</button>
                             </div>
                         </form>
                     </div>
 
-                    <!-- 2nd Section: Subscriptions -->
-                    <h2 class="title has-text-grey-darker">Subscriptions</h2>
-                    <div class="box">
-                        <table class="table is-fullwidth is-bordered">
+                    <!-- 2ème Section: Abonnements -->
+                    <h2 class="text-dark mt-4">Subscriptions</h2>
+                    <div class="card p-4">
+                        <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Username</th>
@@ -61,7 +58,7 @@
                                     <td>
                                         <form method="post" action="{% url 'unfollow-user' follow.followed_user.id %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="button is-danger is-light is-small">
+                                            <button type="submit" class="btn btn-danger btn-sm">
                                                 Unsubscribe
                                             </button>
                                         </form>
@@ -72,11 +69,10 @@
                         </table>
                     </div>
 
-
-                    <!-- 3rd Section: Subscribers -->
-                    <h2 class="title has-text-grey-darker">Subscribers</h2>
-                    <div class="box">
-                        <table class="table is-fullwidth is-bordered">
+                    <!-- 3ème Section: Abonnés -->
+                    <h2 class="text-dark mt-4">Subscribers</h2>
+                    <div class="card p-4">
+                        <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Username</th>
@@ -91,6 +87,7 @@
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
             </div>
         </div>

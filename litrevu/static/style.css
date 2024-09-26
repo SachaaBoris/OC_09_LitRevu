@@ -31,5 +31,9 @@ nav, footer {
 @media (max-width: 768px) {
     .responsive-logo {
         max-width: 120px;
+		margin-bottom: 60px;
     }
+	.empty_margin {
+		display: none;
+	}
 }

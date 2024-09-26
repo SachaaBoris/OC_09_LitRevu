@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Delete Ticket
+{% endblock %}
+
+{% block content %}
+<section class="min-vh-100">
+	<div class="container mt-3">
+        <!-- Navigation -->
+        <div class="previous_btn">
+            {% if previous_url %}
+				<a href="{{ previous_url }}" class="btn btn-link">Go Back</a>
+			{% else %}
+				<a href="{% url 'feed' %}" class="btn btn-link">Go Back</a>
+			{% endif %}
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h1 class="text-dark text-center mb-4">Delete the ticket</h1>
+                    <div class="card p-4">
+                        <p>Are you sure you want to delete the ticket <strong>{{ ticket.title }}</strong>?</p>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-danger w-100">Yes, delete</button>
+                                </div>
+
+                                <div class="col">
+                                    <a href="{% url 'posts' %}" class="btn btn-light w-100">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

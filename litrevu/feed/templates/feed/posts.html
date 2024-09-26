@@ -1,4 +1,4 @@
-{% extends "feed/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
 Posts
@@ -26,9 +26,9 @@ Posts
 
                                 <!-- Ticket Update and Delete Buttons -->
 								<div class="d-flex justify-content-end mt-3">
-                                    <a href="" 
+                                    <a href="{% url 'ticket-update' ticket.id %}" 
 									    class="btn btn-primary btn-sm me-2">Update</a>
-                                    <a href="" 
+                                    <a href="{% url 'ticket-delete' ticket.id %}" 
 									    class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </div>
@@ -75,9 +75,9 @@ Posts
 
                                 <!-- Review Update and Delete Buttons -->
 								<div class="d-flex justify-content-end mt-3">
-                                    <a href=""
+                                    <a href="{% url 'review-update' review.id %}"
                                         class="btn btn-primary btn-sm me-2">Update</a>
-                                    <a href="" 
+                                    <a href="{% url 'review-delete' review.id %}" 
 									    class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </div>

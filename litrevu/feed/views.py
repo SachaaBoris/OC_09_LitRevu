@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from django.views.generic.edit import FormView
@@ -18,6 +19,8 @@ from feed.forms import ReviewForm
 
 
 class FeedView(LoginRequiredMixin, View):
+    template_name = "feed/feed.html"
+    
     def get_reviewed_ticket_ids(self, user):
         #  IDs of tickets reviewed by user
         return Review.objects.filter(user=user).values_list('ticket_id', flat=True)
@@ -35,7 +38,6 @@ class FeedView(LoginRequiredMixin, View):
         return Ticket.objects.filter(user_id__in=followed_users)
     
     def get(self, request, *args, **kwargs):
-        template_name = "feed/feed.html"
         # Retrieve and annotate reviews and tickets visible to the user
         reviews = self.get_users_viewable_reviews(request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
@@ -44,7 +46,10 @@ class FeedView(LoginRequiredMixin, View):
 
         # Get IDs of tickets reviewed by the user
         reviewed_ticket_ids = self.get_reviewed_ticket_ids(request.user)
-
+        
+        # Remember previous page
+        previous_url = request.META.get('HTTP_REFERER', None)
+        
         # Merge and sort posts
         posts = sorted(
             chain(reviews, tickets),
@@ -53,10 +58,11 @@ class FeedView(LoginRequiredMixin, View):
         )
 
         # Render user's feed content
-        return render(request, template_name,
+        return render(request, self.template_name,
                       context={
                       'posts': posts,
-                      'reviewed_ticket_ids': reviewed_ticket_ids
+                      'reviewed_ticket_ids': reviewed_ticket_ids,
+                      'previous_url': previous_url
                       })
 
 
@@ -69,9 +75,17 @@ class PostView(LoginRequiredMixin, View):
 
         # Retrieve reviews created by the user, ordered by creation time
         user_reviews = Review.objects.filter(user=request.user).order_by('-time_created')
-
+        
+        # Remember previous page
+        previous_url = request.META.get('HTTP_REFERER', None)
+        
         # Render the page with the fetched tickets and reviews
-        return render(request, self.template_name, {"user_tickets": user_tickets, "user_reviews": user_reviews})
+        return render(request, self.template_name, 
+                      context={
+                      'user_tickets': user_tickets,
+                      'user_reviews': user_reviews,
+                      'previous_url': previous_url
+                      })
 
 
 class TicketCreateView(LoginRequiredMixin, FormView):
@@ -91,6 +105,11 @@ class TicketCreateView(LoginRequiredMixin, FormView):
 
         # Redirect to the success URL
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        return context
 
 
 class TicketUpdateView(LoginRequiredMixin, UpdateView):
@@ -111,6 +130,11 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # Save the form and redirect to the success URL
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        return context
 
 
 class TicketDeleteView(LoginRequiredMixin, DeleteView):
@@ -126,6 +150,11 @@ class TicketDeleteView(LoginRequiredMixin, DeleteView):
         if ticket.user != self.request.user:
             raise PermissionDenied("You do not have permission to delete this ticket.")
         return ticket
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        return context
 
  
 class ReviewCreateView(LoginRequiredMixin, CreateView):
@@ -135,11 +164,9 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("posts")
 
     def get_context_data(self, **kwargs):
-        # Get default context data
         context = super().get_context_data(**kwargs)
-
-        # Add related ticket to context data
         context['ticket'] = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         return context
 
     def form_valid(self, form):
@@ -172,12 +199,10 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_context_data(self):
-        # Get default context data
         context = super().get_context_data()
-
-        # Add related ticket to context data
         review = self.get_object()
         context['ticket'] = review.ticket
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         return context
 
 
@@ -194,6 +219,11 @@ class ReviewDeleteView(LoginRequiredMixin, DeleteView):
         if review.user != self.request.user:
             raise PermissionDenied("You do not have permission to delete this review")
         return review
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        return context
 
 
 class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
@@ -204,10 +234,9 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # Add second form to the context if it's not already present
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.POST or None)
+        context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         return context
 
     def form_valid(self, form):
