@@ -1,0 +1,90 @@
+{% extends 'feed/base.html' %}
+
+{% block title %}
+Create Review
+{% endblock %}
+
+{% block content %}
+<section class="min-vh-100">
+    <div class="container mt-3">
+        <!-- Navigation -->
+        <div class="previous_btn">
+            <a href="{% url 'feed' %}" class="btn btn-link">Go Back</a>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h1 class="display-4 text-dark text-center">Create Review</h1>
+
+                    <!-- Displaying the Ticket -->
+                    <div class="card p-4 mb-4">
+                        <h2 class="h5">Associated Ticket</h2>
+                        <p><strong>Title: </strong>{{ ticket.title }}</p>
+                        <p><strong>Description: </strong>{{ ticket.description }}</p>
+                        <p><img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" class="img-fluid"></p>
+                    </div>
+
+                    <!-- Review Create Form -->
+                    <div class="card p-4">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <!-- Review Headline -->
+                            <div class="mb-3">
+                                <label for="{{ form.headline.id_for_label }}" class="form-label">Review Title</label>
+                                <div class="input-group">
+                                    <input id="{{ form.headline.id_for_label }}" class="form-control" type="text" placeholder="Review Title" name="{{ form.headline.name }}" value="{{ form.headline.value|default:'' }}" required>
+                                </div>
+                                {% if form.headline.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.headline.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Review Rating -->
+                            <div class="mb-3">
+                                <fieldset>
+                                    <legend class="form-label">Rating</legend>
+                                    <div class="form-check form-check-inline">
+                                        <div>
+											{% for i in "012345" %}
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="radio" name="{{ form2.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}" {% if form2.rating.value == i|add:0 %}checked{% endif %}>
+													<label class="form-check-label" for="id_rating_{{ i }}">{{ i }}</label>
+												</div>
+											{% endfor %}
+										</div>
+                                    </div>
+                                    {% if form.rating.errors %}
+                                        <div class="text-danger">{{ form.rating.errors.0 }}</div>
+                                    {% endif %}
+                                </fieldset>
+                            </div>
+
+                            <!-- Review Body -->
+                            <div class="mb-3">
+                                <label for="{{ form.body.id_for_label }}" class="form-label">Your Review</label>
+                                <textarea id="{{ form.body.id_for_label }}" class="form-control" placeholder="Your review" name="{{ form.body.name }}" required>{{ form.body.value|default:'' }}</textarea>
+                                {% if form.body.errors %}
+                                    <div class="text-danger">{{ form.body.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Create button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-block">Create Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+.responsive-logo {
+	max-width: 50%;
+}
+
+nav, footer {
+	max-height: 60px;
+	box-shadow: 0px 0px 16px 3px #D8D8D8;
+}
+
+.navbar_btn {
+  background: none;
+  border: none;
+  margin-right: 8px;
+  color: rgba(108,117,125,1);
+  font-size: 14px;
+  text-align: center;
+}
+
+.navbar_btn:hover {
+  font-weight: bold;
+}
+
+.previous_btn {
+	display: block;
+	position: fixed;
+	top: 100px;
+	right: 0px;
+	box-shadow: 0px 0px 16px 3px #D8D8D8;
+}
+
+@media (max-width: 768px) {
+    .responsive-logo {
+        max-width: 120px;
+    }
+}

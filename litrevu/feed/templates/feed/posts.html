@@ -1,0 +1,94 @@
+{% extends "feed/base.html" %}
+
+{% block title %}
+Posts
+{% endblock %}
+
+{% block content %}
+
+<section class="min-vh-90">
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="container mt-0">
+            <!-- Section for the feed of tickets and reviews -->
+            <section class="py-4">
+                <div class="container">
+                    <!-- Display User's Tickets -->
+                    {% if user_tickets %}
+                        <h2 class="h5 text-center text-dark">Your Tickets</h2><br>
+                        {% for ticket in user_tickets %}
+                            <div class="card p-4 mb-3">
+                                <p><strong>You posted a ticket - {{ ticket.time_created|date:"F j, Y, P" }}</strong></p>
+                                <h2 class="h4 text-dark">{{ ticket.title }}</h2>
+                                <p>{{ ticket.description }}</p>
+                                {% if ticket.image %}
+                                    <img src="{{ ticket.image.url }}" alt="{{ ticket.title }}" style="width: 300px;">
+                                {% endif %}
+
+                                <!-- Ticket Update and Delete Buttons -->
+								<div class="d-flex justify-content-end mt-3">
+                                    <a href="" 
+									    class="btn btn-primary btn-sm me-2">Update</a>
+                                    <a href="" 
+									    class="btn btn-danger btn-sm">Delete</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="h4 text-center text-muted">You haven't posted any tickets yet.</p><br><br>
+                    {% endif %}
+
+                    <!-- Display User's Reviews -->
+                    {% if user_reviews %}
+                        <h2 class="h4 text-center text-dark">Your Reviews</h2>
+                        {% for review in user_reviews %}
+                            <div class="card p-4 mb-3">
+
+                                <!-- Main Review Content -->
+                                <p><strong>You have created a review - {{ review.time_created|date:"F j, Y, P" }}</strong></p>
+                                <div class="d-flex align-items-center">
+                                    <h2 class="h4 text-dark me-3">{{ review.headline }}</h2>
+                                    <!-- Display the rating with stars -->
+                                    <div class="rating">
+                                        {% for i in "12345" %}
+                                            {% if review.rating >= forloop.counter %}
+                                                <!-- filled star -->
+                                                <i class="fas fa-star text-warning"></i>
+                                            {% else %}
+                                                <!-- empty star -->
+                                                <i class="far fa-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <p>{{ review.body }}</p>
+
+                                <!-- Nested Ticket Box inside Review Box -->
+                                <div class="card bg-light mt-4 p-3">
+                                    <h3 class="h6 text-muted">Ticket Being Reviewed:</h3>
+                                    <h4 class="h5 text-dark">{{ review.ticket.title }}</h4>
+                                    <p>{{ review.ticket.description }}</p><br>
+                                    {% if review.ticket.image %}
+                                        <img src="{{ review.ticket.image.url }}" alt="{{ review.ticket.title }}"
+                                             style="width: 300px;">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Review Update and Delete Buttons -->
+								<div class="d-flex justify-content-end mt-3">
+                                    <a href=""
+                                        class="btn btn-primary btn-sm me-2">Update</a>
+                                    <a href="" 
+									    class="btn btn-danger btn-sm">Delete</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="h4 text-center text-muted">You haven't posted any reviews yet.</p><br>
+                    {% endif %}
+
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

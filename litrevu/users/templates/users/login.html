@@ -1,0 +1,66 @@
+{% extends 'users/base.html' %}
+
+{% block title %}
+Log in
+{% endblock %}
+
+{% block content %}
+<section class="d-flex align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Left column -->
+            <div class="col-md-6 text-center">
+				{% load static %}
+                <img src="{% static 'users/logo_full_b.png' %}" alt="Logo" class="responsive-logo"></img>
+            </div>
+            <!-- Right column -->
+			<div class="col-md-6 d-flex justify-content-center mx-auto" style="max-width: 300px;">
+				<div class="align-items-center">
+					<h1 class="text-center mb-4">Log in</h1>
+					<div class="card p-4 shadow-sm mb-3">
+						<form method="post">
+							{% csrf_token %}
+
+							<div class="mb-3">
+								<label for="username-input" class="form-label">Username</label>
+								<div class="input-group">
+									<span class="input-group-text d-none">
+										<i class="fas fa-user"></i>
+									</span>
+									<input id="username-input" type="text" class="form-control" placeholder="Username" name="{{ form.username.name }}" required>
+								</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="password-input" class="form-label">Password</label>
+								<div class="input-group">
+									<span class="input-group-text d-none">
+										<i class="fas fa-lock"></i>
+									</span>
+									<input id="password-input" type="password" class="form-control" placeholder="Password" name="{{ form.password.name }}" required>
+								</div>
+							</div>
+
+							<div class="d-grid">
+								<button type="submit" class="btn btn-primary" title="Log in">Log in</button>
+							</div>
+						</form>
+					</div>
+					
+					{% if message %}
+					<div class="alert alert-warning text-center mb-3">
+						{{ message }}
+					</div>
+					{% endif %}
+					
+					<div class="card p-4 shadow-sm mb-3">
+						<h3 class="card-title">Sign up</h3>
+						<p>Don't have an account? Sign up now!</p>
+						<a href="{% url 'signup' %}" class="btn btn-primary" title="Sign up">Sign up</a>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

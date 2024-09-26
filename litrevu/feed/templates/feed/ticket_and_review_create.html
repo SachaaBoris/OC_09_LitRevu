@@ -1,0 +1,117 @@
+{% extends 'feed/base.html' %}
+
+{% block title %}
+Create Ticket and Review
+{% endblock %}
+
+{% block content %}
+<section class="min-vh-100">
+	<div class="container mt-3">
+        <!-- Navigation -->
+        <div class="previous_btn">
+            <a href="{% url 'feed' %}" class="btn btn-link">Go Back</a>
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center h-20">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h1 class="display-4 text-dark text-center">Create Ticket and Review</h1>
+                    <div class="card p-4">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Ticket Title -->
+                            <div class="mb-3">
+                                <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-ticket-alt"></i>
+                                    </span>
+                                    <input id="{{ form.title.id_for_label }}" class="form-control" type="text" placeholder="Title" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}" required>
+                                </div>
+                                {% if form.title.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.title.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Ticket Description -->
+                            <div class="mb-3">
+                                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                                <textarea id="{{ form.description.id_for_label }}" class="form-control" placeholder="Description" name="{{ form.description.name }}" required>{{ form.description.value|default:'' }}</textarea>
+                                {% if form.description.errors %}
+                                    <div class="text-danger">{{ form.description.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Ticket Image -->
+                            <div class="mb-3">
+                                <label for="image-input" class="form-label">Select an image...</label>
+                                <input class="form-control" type="file" name="{{ form.image.name }}" id="image-input">
+                                {% if form.image.errors %}
+                                    <div class="text-danger">{{ form.image.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <hr>
+                            <h2 class="h4 text-dark text-start mt-5">Review</h2>
+
+                            <!-- Review Headline -->
+                            <div class="mb-3">
+                                <label for="{{ form2.headline.id_for_label }}" class="form-label">Headline</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-heading"></i>
+                                    </span>
+                                    <input id="{{ form2.headline.id_for_label }}" class="form-control" type="text" placeholder="Headline" name="{{ form2.headline.name }}" value="{{ form2.headline.value|default:'' }}" required>
+                                </div>
+                                {% if form2.headline.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form2.headline.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Review Rating -->
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <div>
+                                    {% for i in "012345" %}
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="{{ form2.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}" {% if form2.rating.value == i|add:0 %}checked{% endif %}>
+                                            <label class="form-check-label" for="id_rating_{{ i }}">{{ i }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% if form2.rating.errors %}
+                                    <div class="text-danger">{{ form2.rating.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Review Body -->
+                            <div class="mb-3">
+                                <label for="{{ form2.body.id_for_label }}" class="form-label">Body</label>
+                                <textarea id="{{ form2.body.id_for_label }}" class="form-control" placeholder="Body" name="{{ form2.body.name }}" required>{{ form2.body.value|default:'' }}</textarea>
+                                {% if form2.body.errors %}
+                                    <div class="text-danger">{{ form2.body.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-block">Create Ticket and Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

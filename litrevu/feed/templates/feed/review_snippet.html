@@ -1,0 +1,40 @@
+<div class="card p-3 mt-4">
+    <p><strong>
+        {% if post.user == user %}
+            You posted a review
+        {% else %}
+            {{ post.user.username }} posted a review
+        {% endif %}
+        - {{ post.time_created|date:"F j, Y, P" }}
+    </strong></p>
+
+    <div class="d-flex align-items-center">
+        <h2 class="h4 text-dark mr-3">{{ post.headline }}</h2>
+        <!-- Display the rating with stars -->
+        <div class="rating">
+            {% for i in "12345" %}
+                {% if post.rating >= forloop.counter %}
+                    <i class="fas fa-star text-warning"></i> <!-- filled star -->
+                {% else %}
+                    <i class="far fa-star text-warning"></i> <!-- empty star -->
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <p>{{ post.body }}</p>
+    <div class="card bg-light p-3 mt-4">
+        <h3 class="h6 text-muted">Ticket Being Reviewed:</h3>
+        <h4 class="h5 text-dark">{{ post.ticket.title }}</h4>
+        <p>{{ post.ticket.description }}</p>
+        {% if post.ticket.image %}
+            <img src="{{ post.ticket.image.url }}" alt="{{ post.ticket.title }}" class="img-fluid" style="max-width: 300px;">
+        {% endif %}
+    </div>
+    {% if post.user == user %}
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{% url 'review-update' post.id %}" class="btn btn-primary btn-sm me-2">Update</a>
+            <a href="{% url 'review-delete' post.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    {% endif %}
+</div>

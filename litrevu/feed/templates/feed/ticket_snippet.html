@@ -1,0 +1,22 @@
+<div class="card p-3 mb-3">
+    <p><strong>
+        {% if post.user == user %}
+            You posted a ticket
+        {% else %}
+            {{ post.user.username }} posted a ticket
+        {% endif %}
+        - {{ post.time_created|date:"F j, Y, P" }}
+    </strong></p>
+
+    <h2 class="h4 text-dark">{{ post.title }}</h2>
+    <p>{{ post.description }}</p>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid" style="max-width: 300px;">
+    {% endif %}
+
+    {% if post.id not in reviewed_ticket_ids %}
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{% url 'review-create' ticket_id=post.id %}" class="btn btn-primary btn-sm">Add Review</a>
+        </div>
+    {% endif %}
+</div>
