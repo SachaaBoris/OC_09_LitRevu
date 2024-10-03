@@ -1,0 +1,15 @@
+<div class="container mb-3">
+	{% for message in messages %}
+	<!-- Les messages seront affichés ici avec la classe correspondante -->
+	<div class="alert {% if message.tags %}alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %} position-relative" role="alert">
+		<div class="d-flex justify-content-center align-items-center">
+			<div class="text-center w-100">
+				{{ message }}
+			</div>
+		</div>
+		<div class="position-absolute end-0 top-0 me-2">
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	</div>
+	{% endfor %}
+</div>

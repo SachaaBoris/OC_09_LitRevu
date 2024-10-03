@@ -35,7 +35,18 @@ WebApp django permettant de donner son avis ou de demander un avis sur un livre.
 	| Darkdev | igotapass21 |
 	| Maïté | igotapass20 |
 	| Sarma | igotapass19 |
-  
+	| Administrator | 123456789 |
+	
+	Par defaut, ces comptes sont abonnés et peuvent voir les publications de :  
+	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
+	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+	| Toto | X |  |  |  |  | X |  |
+	| Michel56 | X | X | X | X | X | X |  |
+	| Starlette | X | X |  |  |  | X |  |
+	| Darkdev | X | X | X | X |  | X |  |
+	| Maïté |  |  | X |  | X | X |  |
+	| Sarma |  |  |  |  |  | X |  |
+	| Administrator | X | X | X | X | X | X | X |  
   
 ---  
   

@@ -22,6 +22,9 @@ from django.views.generic import RedirectView
 from users.views import LoginView
 from users.views import SignupView
 from users.views import LogoutUserView
+from users.views import FollowUserView
+from users.views import FollowedUsersView
+from users.views import UnfollowUserView
 
 from feed.views import FeedView
 from feed.views import PostView
@@ -43,6 +46,10 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
     path("logout/", LogoutUserView.as_view(), name="logout"),
+    path('follow/', FollowUserView.as_view(), name='follow-user'),
+    path('follow/<int:pk>/', FollowUserView.as_view(), name='follow-user'),
+    path('unfollow/<int:pk>/', UnfollowUserView.as_view(), name='unfollow-user'),
+    path('subscriptions/', FollowedUsersView.as_view(), name='subscriptions'),
     
     # Explicit tickets & feed paths
     path("feed/", FeedView.as_view(), name="feed"),

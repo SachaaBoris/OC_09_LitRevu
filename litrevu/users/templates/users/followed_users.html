@@ -1,94 +1,156 @@
 {% extends 'base.html' %}
 
-{% block title %}Abonnements{% endblock %}
+{% block title %}
+Abonnements
+{% endblock %}
 
 {% block content %}
 <section class="min-vh-100">
-    <div class="d-flex align-items-center h-100">
-        <div class="container text-center">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-
-                    {% if messages %}
-                    <div class="container mb-3">
-                        {% for message in messages %}
-                        <!-- Les messages seront affichés ici avec la classe correspondante (danger, success, etc.). -->
-                        <div class="alert {% if message.tags %}alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert">
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            {{ message }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <!-- 1ère Section: Suivre d'autres utilisateurs -->
-                    <h1 class="text-dark">Follow Other Users</h1>
-                    <div class="card p-4">
-                        <form method="post" action="{% url 'follow-user' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label class="form-label" for="username_to_follow">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-user"></i>
-                                    </span>
-                                    <input id="username_to_follow" class="form-control" type="text" placeholder="Username" name="username_to_follow" required>
-                                </div>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-info">Follow</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- 2ème Section: Abonnements -->
-                    <h2 class="text-dark mt-4">Subscriptions</h2>
-                    <div class="card p-4">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Username</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for follow in followed_users %}
-                                <tr>
-                                    <td>{{ follow.followed_user.username }}</td>
-                                    <td>
-                                        <form method="post" action="{% url 'unfollow-user' follow.followed_user.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                Unsubscribe
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- 3ème Section: Abonnés -->
-                    <h2 class="text-dark mt-4">Subscribers</h2>
-                    <div class="card p-4">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Username</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for follow in request.user.followed_by.all %}
-                                <tr>
-                                    <td>{{ follow.user.username }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
+	<h1 class="text-white text-center mt-5 pb-3">Subscriptions</h1>
+	<div class="container mt-0">
+        <section class="py-3">
+            <div class="container text-center">
+				{% load static %}
+			
+				<!-- Search User -->
+				<div class="card mb-4">
+					<div class="d-flex px-4 rounded-top bg-card-title">
+						<div class="mt-3">
+							<img src="{% static 'ticket.png' %}" alt="Ticket icon" class="img-fluid me-3" style="width:28px;height:28px;">
+						</div>
+						<h2 class="h4 py-2 mt-2" style="height:40px;">Search User</h2>
+					</div>
+					<div class="p-5">
+						<form method="post" action="{% url 'follow-user' %}">
+							{% csrf_token %}
+							<div class="input-group mb-3">
+								<label class="form-label" for="username_to_follow"></label>
+								<input id="username_to_follow" class="form-control" type="text" placeholder="Username" name="username_to_follow" required>
+							</div>
+							{% if messages %}
+								{% include 'message_snippet.html' %}
+							{% endif %}
+							{% if not user.is_superuser %}
+								<div class="d-grid">
+									<button type="submit" class="btn btn-success" style="height: 60px;">Follow</button>
+								</div>
+							{% endif %}
+						</form>
+					</div>
+				</div>
+				
+				<!-- Abonnements -->
+				<div style="height:20px;"></div>
+				<div class="card mb-4">
+					<div class="d-flex px-4 rounded-top bg-card-title">
+						<div class="mt-3">
+							<img src="{% static 'ticket.png' %}" alt="Ticket icon" class="img-fluid me-3" style="width:28px;height:28px;">
+						</div>
+						<h2 class="h4 py-2 mt-2" style="height:40px;">Subscribed</h2>
+					</div>
+					<div class="p-5">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Username</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for follow in followed_users %}
+								<tr>
+									<td>{{ follow.followed_user.username }}</td>
+									<td>
+										<form method="post" action="{% url 'unfollow-user' follow.followed_user.id %}">
+											{% csrf_token %}
+											<button type="submit" class="btn btn-danger btn-sm">
+												Unfollow
+											</button>
+										</form>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<!-- Abonnés -->
+				<div style="height:20px;"></div>
+				<div class="card mb-4">
+					<div class="d-flex px-4 rounded-top bg-card-title">
+						<div class="mt-3">
+							<img src="{% static 'ticket.png' %}" alt="Ticket icon" class="img-fluid me-3" style="width:28px;height:28px;">
+						</div>
+						<h2 class="h4 py-2 mt-2" style="height:40px;">Subscribers</h2>
+					</div>
+					<div class="p-5">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Username</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for follow in request.user.followed_by.all %}
+								<tr>
+									<td>{{ follow.user.username }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<!-- Tous les utilisateurs inscrits -->
+				<div style="height:20px;"></div>
+				<div class="card mb-4">
+					<div class="d-flex px-4 rounded-top bg-card-title">
+						<div class="mt-3">
+							<img src="{% static 'ticket.png' %}" alt="Ticket icon" class="img-fluid me-3" style="width:28px;height:28px;">
+						</div>
+						<h2 class="h4 py-2 mt-2" style="height:40px;">All Users</h2>
+					</div>
+					<div class="p-5">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Username</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for other_user in all_users %}
+								<tr>
+									<td>{{ other_user.username }}</td>
+									<td>
+										{% if not user.is_superuser %}
+											{% if other_user.id in followed_user_ids %}
+												<!-- Unfollow button if the user is already followed -->
+												<form method="post" action="{% url 'unfollow-user' other_user.id %}">
+													{% csrf_token %}
+													<button type="submit" class="btn btn-danger btn-sm">
+														Unfollow
+													</button>
+												</form>
+											{% else %}
+												<!-- Follow button if the user is not followed yet -->
+												<form method="post" action="{% url 'follow-user' %}">
+													{% csrf_token %}
+													<input type="hidden" name="username_to_follow" value="{{ other_user.username }}">
+													<button type="submit" class="btn btn-success btn-sm">
+														Follow
+													</button>
+												</form>
+											{% endif %}
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
             </div>
         </div>
     </div>

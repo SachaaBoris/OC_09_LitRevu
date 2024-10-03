@@ -1,20 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Create Ticket and Review
+Update Review
 {% endblock %}
 
 {% block content %}
 <section class="min-vh-100">
-	<h1 class="text-white text-center mt-5 pb-3">Create Ticket and Review</h1>
-	{% include 'feed/back_button_snippet.html' %}
+	<h1 class="text-white text-center mt-5 pb-3">Update Review</h1>
+    {% include 'feed/back_button_snippet.html' %}
     <div class="container mt-0">
         <section class="py-3">
             <div class="container text-center">
-                <!-- Display Ticket & Review Here -->
-				{% include 'feed/review_create_form_snippet.html' %}
+				<!-- Display Review Here -->
+                {% include 'feed/review_response_form_snippet.html' %}
             </div>
-        </section>
+        </div>
     </div>
 </section>
 {% endblock %}

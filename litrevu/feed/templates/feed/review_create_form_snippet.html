@@ -1,0 +1,136 @@
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="card mb-4">
+		<div class="d-flex px-4 rounded-top bg-card-title">
+			<div class="mt-3">
+				{% load static %}
+				<img src="{% static 'ticket.png' %}" alt="Ticket icon" class="img-fluid me-3" style="width:28px;height:28px;">
+			</div>
+			<h2 class="h4 py-2 mt-2" style="height:40px;">Ticket</h2>
+		</div>
+		<div class="p-5">
+			<div class="d-flex flex-column flex-md-row justify-content-between">
+				<div class="flex-grow-1">
+					<!-- Book Title -->
+					<div class="mb-3 text-start">
+						<label for="{{ form.title.id_for_label }}" class="form-label text-start">Book Title :</label>
+						<div class="input-group">
+							<input id="{{ form.title.id_for_label }}" class="form-control" type="text" placeholder="Book Title" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}" required>
+						</div>
+						{% if form.title.errors %}
+							<div class="text-danger">
+								{% for error in form.title.errors %}
+									{{ error }}
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+					<!-- Ticket Description -->
+					<div class="text-start">
+						<label for="{{ form.description.id_for_label }}" class="form-label text-start">Message :</label>
+						<textarea id="{{ form.description.id_for_label }}" class="form-control" style="height:130px;" placeholder="Message" name="{{ form.description.name }}" required>{{ form.description.value|default:'' }}</textarea>
+						{% if form.description.errors %}
+							<div class="text-danger">{{ form.description.errors.0 }}</div>
+						{% endif %}
+					</div>
+				</div>
+				
+				<div class="mobile-hidden" style="width:20px;"></div>
+				
+				<div class="text-center">
+					<label for="image-input" class="form-label">Book Cover</label>
+					<div class="cover-preview m-auto mb-3">
+						<img id="image-preview" src="" alt="Image Preview" style="display: none; width: 100%; height: 100%;">
+					</div>
+					<!-- Book Cover -->
+					<div class="mb-3">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" id="image-input" name="{{ form.image.name }}">
+							<label class="btn btn-primary custom-file-label" for="image-input">Browse</label>
+						</div>
+						{% if form.image.errors %}
+							<div class="text-danger">{{ form.image.errors.0 }}</div>
+						{% endif %}
+					</div>
+					<script src="{% static 'preview-cover.js' %}"></script>
+				</div>
+			</div>
+		</div>
+		
+		<div class="d-flex px-4 bg-card-title">
+			<div class="mt-3">
+				<img src="{% static 'review.png' %}" alt="Review icon" class="img-fluid me-3" style="width:28px;height:28px;">
+			</div>
+			<h2 class="h4 py-2 mt-2" style="height:40px;">Review</h2>
+		</div>
+		<div class="p-5">
+			<div class="d-flex flex-column flex-md-row">
+				<!-- Review Headline -->
+				<div class="mb-3 text-start flex-grow-1">
+					<label for="{{ form2.headline.id_for_label }}" class="form-label text-start">Review Title :</label>
+					<div class="input-group">
+						<input id="{{ form2.headline.id_for_label }}" class="form-control" type="text" placeholder="Review Title" name="{{ form2.headline.name }}" value="{{ form2.headline.value|default:'' }}" required>
+					</div>
+					{% if form2.headline.errors %}
+						<div class="text-danger">
+							{% for error in form2.headline.errors %}
+								{{ error }}
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+				<div class="mobile-hidden" style="width:20px;"></div>
+				<!-- Review Rating -->
+				<div class="mb-3 text-start flex-grow-1">
+					<label class="form-label">Rating :    &nbsp;&nbsp;&nbsp;&nbsp; ( W I P )</label>
+					<div class="radioboutons-below" data-star-empty="{% static 'star_empty.png' %}" data-star-full="{% static 'star_full.png' %}">
+						<div class="d-inline-block mt-1">
+							<img src="" id="id_star_0" style="width:5px;"></img>
+							<img src="{% static 'star_empty.png' %}" id="id_star_1" style="width:16px;"></img>
+							<img src="{% static 'star_empty.png' %}" id="id_star_2" style="width:16px;"></img>
+							<img src="{% static 'star_empty.png' %}" id="id_star_3" style="width:16px;"></img>
+							<img src="{% static 'star_empty.png' %}" id="id_star_4" style="width:16px;"></img>
+							<img src="{% static 'star_empty.png' %}" id="id_star_5" style="width:16px;"></img>
+						</div>
+					</div>
+					<div class="radioboutons-ontop">
+						<div class="form-check form-check-inline mt-1">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="0" id="id_rating_0">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="1" id="id_rating_1">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="2" id="id_rating_2">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="3" id="id_rating_3">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="4" id="id_rating_4">
+							<input class="form-check-input radio-btns" type="radio" name="rating" value="5" id="id_rating_5">
+						</div>
+					</div>
+					
+					<script src="{% static 'star-form.js' %}"></script>
+					<div>
+						{% for i in "012345" %}
+							<div class="form-check form-check-inline mt-1">
+								<input class="form-check-input" type="radio" name="{{ form2.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}" {% if form2.rating.value == i|add:0 %}checked{% endif %}>
+								<label class="form-check-label" for="id_rating_{{ i }}">{{ i }}</label>
+							</div>
+						{% endfor %}
+					</div>
+					{% if form2.rating.errors %}
+						<div class="text-danger">{{ form2.rating.errors.0 }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<!-- Review Body -->
+               <div class="mb-3 text-start">
+                   <label for="{{ form2.body.id_for_label }}" class="form-label">Your Review :</label>
+                   <textarea id="{{ form2.body.id_for_label }}" class="form-control" style="height: 200px;" placeholder="Your Review" name="{{ form2.body.name }}" required>{{ form2.body.value|default:'' }}</textarea>
+                   {% if form2.body.errors %}
+                       <div class="text-danger">{{ form2.body.errors.0 }}</div>
+                   {% endif %}
+               </div>
+			
+			<!-- Submit Button -->
+			<div class="d-grid">
+				<button type="submit" class="btn btn-success btn-block" style="height: 60px;">Submit Ticket and Review</button>
+			</div>
+		</div>
+	</div>
+</form>

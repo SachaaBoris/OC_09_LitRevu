@@ -1,0 +1,10 @@
+<div class="container mt-3">
+    <!-- Navigation -->
+    <div class="previous_btn">
+        {% if previous_url %}
+			<a href="{{ previous_url }}" class="btn btn-link">Go Back</a>
+		{% else %}
+			<a href="{% url 'feed' %}" class="btn btn-link">Go Back</a>
+		{% endif %}
+    </div>
+</div>

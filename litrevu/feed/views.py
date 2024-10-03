@@ -23,29 +23,73 @@ class FeedView(LoginRequiredMixin, View):
     
     def get_reviewed_ticket_ids(self, user):
         #  IDs of tickets reviewed by user
-        return Review.objects.filter(user=user).values_list('ticket_id', flat=True)
+        if user.is_superuser:
+            return Review.objects.values_list('ticket_id', flat=True).distinct()
+        else:
+            # IDs des tickets reviewés par l'utilisateur
+            reviewed_by_user = Review.objects.filter(user=user).values_list('ticket_id', flat=True)
+
+            # IDs des tickets créés par l'utilisateur qui ont été reviewés
+            user_tickets = Ticket.objects.filter(user=user).values_list('id', flat=True)
+            reviewed_user_tickets = Review.objects.filter(ticket_id__in=user_tickets).values_list('ticket_id', flat=True)
+
+            # Convertir les querysets en sets et combiner
+            combined_ticket_ids = set(reviewed_by_user) | set(reviewed_user_tickets)
+
+            # Retourner la liste combinée des IDs de tickets
+            return list(combined_ticket_ids)
+        
     
     def get_users_viewable_reviews(self, user):
-        #  Reviews from users followed by user
-        followed_users = list(user.following.values_list('followed_user', flat=True))
-        followed_users.append(user.id)
-        return Review.objects.filter(user_id__in=followed_users)
+        if user.is_superuser:
+            # Return all reviews if the user is a superuser
+            return Review.objects.all()
+        else:
+            # IDs of users followed by the user
+            followed_users = list(user.following.values_list('followed_user', flat=True))
+            followed_users.append(user.id)  # Add the user themselves
+
+            # Get reviews from users the current user follows
+            reviews_from_followed_users = Review.objects.filter(user_id__in=followed_users)
+
+            # Get tickets posted by the user and users followed by the user
+            followed_users_tickets = Ticket.objects.filter(user_id__in=followed_users).values_list('id', flat=True)
+
+            # Get reviews linked to the user's tickets and tickets posted by followed users
+            reviews_on_followed_users_tickets = Review.objects.filter(ticket_id__in=followed_users_tickets)
+
+            # Combine reviews from followed users and reviews on followed users' tickets
+            combined_reviews = reviews_from_followed_users | reviews_on_followed_users_tickets
+
+            return combined_reviews.distinct()
     
     def get_users_viewable_tickets(self, user):
-        #  Tickets from users followed by user
-        followed_users = list(user.following.values_list('followed_user', flat=True))
-        followed_users.append(user.id)
-        return Ticket.objects.filter(user_id__in=followed_users)
+        if user.is_superuser:
+            # Return all tickets if the user is a superuser
+            return Ticket.objects.all()
+        else:
+             # Return tickets from users followed by the user
+            followed_users = list(user.following.values_list('followed_user', flat=True))
+            followed_users.append(user.id)
+            
+            # Get tickets that have been reviewed
+            reviewed_ticket_ids = Review.objects.values_list('ticket_id', flat=True)
+            
+            # Filter tickets from followed users excluding the reviewed tickets
+            return Ticket.objects.filter(user_id__in=followed_users).exclude(id__in=reviewed_ticket_ids)
     
     def get(self, request, *args, **kwargs):
+        user = request.user
+        
         # Retrieve and annotate reviews and tickets visible to the user
         reviews = self.get_users_viewable_reviews(request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
         tickets = self.get_users_viewable_tickets(request.user)
         tickets = tickets.annotate(content_type=Value('TICKET', CharField()))
 
-        # Get IDs of tickets reviewed by the user
-        reviewed_ticket_ids = self.get_reviewed_ticket_ids(request.user)
+        # Get IDs of tickets that have been reviewed
+        reviewed_ticket_ids = self.get_reviewed_ticket_ids(user)
+        print(f'{reviewed_ticket_ids}')
         
         # Remember previous page
         previous_url = request.META.get('HTTP_REFERER', None)
@@ -58,12 +102,12 @@ class FeedView(LoginRequiredMixin, View):
         )
 
         # Render user's feed content
-        return render(request, self.template_name,
-                      context={
-                      'posts': posts,
-                      'reviewed_ticket_ids': reviewed_ticket_ids,
-                      'previous_url': previous_url
-                      })
+        return render(request, self.template_name, context={
+            'page': "feed",
+            'posts': posts,
+            'reviewed_ticket_ids': reviewed_ticket_ids,
+            'previous_url': previous_url
+        })
 
 
 class PostView(LoginRequiredMixin, View):
@@ -80,12 +124,12 @@ class PostView(LoginRequiredMixin, View):
         previous_url = request.META.get('HTTP_REFERER', None)
         
         # Render the page with the fetched tickets and reviews
-        return render(request, self.template_name, 
-                      context={
-                      'user_tickets': user_tickets,
-                      'user_reviews': user_reviews,
-                      'previous_url': previous_url
-                      })
+        return render(request, self.template_name, context={
+            'page': "posts",
+            'user_tickets': user_tickets,
+            'user_reviews': user_reviews,
+            'previous_url': previous_url
+        })
 
 
 class TicketCreateView(LoginRequiredMixin, FormView):
@@ -109,6 +153,7 @@ class TicketCreateView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        context['page'] = "create-ticket"
         return context
 
 
@@ -134,6 +179,7 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        context['page'] = "update-ticket"
         return context
 
 
@@ -167,9 +213,12 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['ticket'] = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        context['page'] = "review-response"
         return context
 
     def form_valid(self, form):
+        print("form_valid called")
+        print("Form Data:", form.cleaned_data)
         # Assign the requesting user and related ticket to the form instance
         form.instance.user = self.request.user
         form.instance.ticket = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
@@ -203,6 +252,7 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
         review = self.get_object()
         context['ticket'] = review.ticket
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        context['page'] = "review-update"
         return context
 
 
@@ -237,6 +287,7 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.POST or None)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
+        context['page'] = "review-create"
         return context
 
     def form_valid(self, form):

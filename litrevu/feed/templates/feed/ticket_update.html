@@ -6,69 +6,13 @@ Update Ticket
 
 {% block content %}
 <section class="min-vh-100">
-	<div class="container mt-3">
-        <!-- Navigation -->
-        <div class="previous_btn">
-            {% if previous_url %}
-				<a href="{{ previous_url }}" class="btn btn-link">Go Back</a>
-			{% else %}
-				<a href="{% url 'feed' %}" class="btn btn-link">Go Back</a>
-			{% endif %}
-        </div>
-    </div>
-    <div class="d-flex align-items-center justify-content-center h-100">
-        <div class="container text-center">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <h1 class="text-dark text-center mb-4">Update Ticket</h1>
-                    <div class="card p-4">
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-
-                            <!-- Ticket Title -->
-                            <div class="mb-3">
-                                <label class="form-label" for="{{ form.title.id_for_label }}">Book Title</label>
-                                <div class="input-group">
-                                    <input id="{{ form.title.id_for_label }}" class="form-control" type="text" placeholder="Title" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}" required>
-                                </div>
-                                {% if form.title.errors %}
-                                    <div class="text-danger">
-                                        {% for error in form.title.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Ticket Description -->
-                            <div class="mb-3">
-                                <label class="form-label" for="{{ form.description.id_for_label }}">Message</label>
-                                <textarea id="{{ form.description.id_for_label }}" class="form-control" placeholder="Description" name="{{ form.description.name }}" required>{{ form.description.value|default:'' }}</textarea>
-                                {% if form.description.errors %}
-                                    <div class="text-danger">{{ form.description.errors.0 }}</div>
-                                {% endif %}
-                            </div>
-
-                            <!-- Ticket Image -->
-                            <div class="mb-3">
-                                <label class="form-label">Book Cover</label>
-                                <div class="input-group">
-                                    <input class="form-control" type="file" name="{{ form.image.name }}" id="image-input">
-                                    {% if form.image.value %}
-                                        <span class="input-group-text">{{ form.image.value }}</span>
-                                    {% endif %}
-                                </div>
-                                {% if form.image.errors %}
-                                    <div class="text-danger">{{ form.image.errors.0 }}</div>
-                                {% endif %}
-                            </div>
-
-                            <div class="d-grid mt-3">
-                                <button type="submit" class="btn btn-primary">Update Ticket</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+	<h1 class="text-white text-center mt-5 pb-3">Update Ticket</h1>
+	{% include 'feed/back_button_snippet.html' %}
+	<div class="container mt-0">
+        <section class="py-3">
+            <div class="container text-center">
+                <!-- Display Ticket Here -->
+				{% include 'feed/ticket_form_snippet.html' %}
             </div>
         </div>
     </div>
