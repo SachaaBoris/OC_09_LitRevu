@@ -28,7 +28,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	Rendez-vous dans votre navigateur et allez à l'adresse :  
 	http://127.0.0.1:8000 ou http://localhost:8000/  
   
-:black_circle:
+:black_circle:  
   
 	Vous pouvez désormais créer un compte et utiliser l'application.  
   
@@ -43,7 +43,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Sarma | igotapass19 |
 	| Administrator | 123456789 |
   
-:black_circle:
+:black_circle:  
   
 	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
@@ -56,7 +56,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Sarma |  |  |  |  |  | X |  |
 	| Administrator | X | X | X | X | X | X | X |  
   
-:black_circle:
+:black_circle:  
   
 	Permissions par défaut :  
 	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
@@ -64,7 +64,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| CustomUser | X | X | X | X |  |  |
 	| Administrator |  |  |  |  | X | X |  
   
-:black_circle:
+:black_circle:  
   
 # ● Etapes supplémentaires facultatives  
 5. Démarrer une nouvelle BDD :  
@@ -77,12 +77,12 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
   ``` 
   
 6. Créer un SuperUser :  
-	Rentrez la commande suivante et suivez les instructions
+	Rentrez la commande suivante et suivez les instructions  
   ``` 
 	py litrevu/manage.py createsuperuser
   ```  
   
-:black_circle:
+:black_circle:  
   
 ---  
   
