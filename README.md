@@ -32,7 +32,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
   
 Vous pouvez désormais créer un compte et utiliser l'application.  
   
-Cinq comptes demo sont fournis :  
+Sept comptes demo sont fournis :  
 | UserID | Password |
 | :---: | :---: |
 | Toto | igotapass24 |
