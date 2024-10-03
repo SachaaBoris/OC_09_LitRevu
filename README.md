@@ -42,7 +42,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Sarma | igotapass19 |
 	| Administrator | 123456789 |
   
-<br/>
+/play whoomp►
   
 	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
