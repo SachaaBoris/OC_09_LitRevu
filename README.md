@@ -1,26 +1,29 @@
 # OC_09 LitRevu    
   
 # ● Description du projet  
-WebApp django permettant de donner son avis ou de demander un avis sur un livre.
+WebApp django permettant de donner son avis ou de demander un avis sur un livre.  
+Elle intégre un système d'authentification, d'actualitées et d'abonnements.  
   
 # ● Comment installer et démarrer l'application  
 1. Prérequis :  
     Avoir Python 3 installé  
-    Avoir téléchargé et installé l'API :  
-    git clone https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR "local\folder"  
     Avoir téléchargé et dézipé l'archive du projet sur votre disque dur,  
     Ou clonez le repo avec cette commande :  
   ```  
   git clone https://github.com/SachaaBoris/OC_09_LitRevu.git "local\folder"  
   ```  
   
-2. Installer l'environnement virtuel :  
-    Depuis votre console favorite, naviguez jusqu'au repertoire du script  
+2. Générer et utiliser une clé secrète Django :  
+	Rendez-vous sur https://djecrety.ir/ et générez une clé que vous pourrez coller dans le fichier .env.sample situé à la racine du projet.  
+	Rennomez .env.sample en .env  
+  
+3. Installer l'environnement virtuel :  
+    Depuis votre console favorite, naviguez jusqu'au répertoire du script  
     Pour créer l'environnement virtuel rentrez la ligne de commande : `py -m venv ./venv`  
     Activez ensuite l'environnement virtuel en rentrant la commande : `venv\Scripts\activate`  
-    Installer les requirements du projet avec la commande : `py -m pip install -r requirements.txt`   
+    Installer les requirements du projet avec la commande : `py -m pip install -r requirements.txt`  
   
-3. Démarrer le serveur :  
+4. Démarrer le serveur :  
     Toujours dans la console et à la racine du script, tapez la commande : `py LitRevu/manage.py runserver`  
 	Rendez-vous dans votre navigateur et allez à l'adresse :  
 	http://127.0.0.1:8000 ou http://localhost:8000/  
@@ -49,10 +52,23 @@ WebApp django permettant de donner son avis ou de demander un avis sur un livre.
 	| Administrator | X | X | X | X | X | X | X |  
 	
 	Permissions par défaut :  
-	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts |
-	| :---: | :---: | :---: | :---: | :---: | :---: |
-	| CustomUser | X | X | X | X |  |
-	| Administrator |  |  |  |  | X |  
+	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
+	| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+	| CustomUser | X | X | X | X |  |  |
+	| Administrator |  |  |  |  | X | X |  
+  
+# ● Etapes supplémentaires facultatives  
+5. Démarrer une nouvelle BDD :  
+  ``` 
+  py manage.py makemigrations  
+  py manage.py migrate  
+  ``` 
+  
+6. Créer un SuperUser :  
+	Rentrez la commande suivante et suivez les instructions
+  ``` 
+	py manage.py createsuperuser  
+  ```  
   
 ---  
   
