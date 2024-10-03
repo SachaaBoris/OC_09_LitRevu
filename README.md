@@ -10,7 +10,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
     Avoir téléchargé et dézipé l'archive du projet sur votre disque dur,  
     Ou clonez le repo avec cette commande :  
   ```  
-  git clone https://github.com/SachaaBoris/OC_09_LitRevu.git "local\folder"  
+  git clone https://github.com/SachaaBoris/OC_09_LitRevu.git "local\folder"
   ```  
   
 2. Générer et utiliser une clé secrète Django :  
@@ -24,7 +24,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
     Installer les requirements du projet avec la commande : `py -m pip install -r requirements.txt`  
   
 4. Démarrer le serveur :  
-    Toujours dans la console et à la racine du script, tapez la commande : `py LitRevu/manage.py runserver`  
+    Toujours dans la console et à la racine du script, tapez la commande : `py litrevu/manage.py runserver`  
 	Rendez-vous dans votre navigateur et allez à l'adresse :  
 	http://127.0.0.1:8000 ou http://localhost:8000/  
 	
@@ -45,7 +45,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 	| Toto | X |  |  |  |  | X |  |
 	| Michel56 | X | X | X | X | X | X |  |
-	| Starlette | X | X |  |  |  | X |  |
+	| Starlette | X | X | X |  |  | X |  |
 	| Darkdev | X | X | X | X |  | X |  |
 	| Maïté |  |  | X |  | X | X |  |
 	| Sarma |  |  |  |  |  | X |  |
@@ -59,16 +59,20 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
   
 # ● Etapes supplémentaires facultatives  
 5. Démarrer une nouvelle BDD :  
+	Quittez le serveur (CTRL+C dans la console) si vous l'avez lancé et supprimez le fichier db.sqlite3  
+	Vous pouvez également supprimer les images des anciens tickets du dossier media/tickets
+	Et rentrer les commandes suivantes pour créer une nouvelle BDD
   ``` 
-  py manage.py makemigrations  
-  py manage.py migrate  
+  py litrevu/manage.py makemigrations
+  py litrevu/manage.py migrate
   ``` 
   
 6. Créer un SuperUser :  
 	Rentrez la commande suivante et suivez les instructions
   ``` 
-	py manage.py createsuperuser  
+	py litrevu/manage.py createsuperuser
   ```  
+  
   
 ---  
   
