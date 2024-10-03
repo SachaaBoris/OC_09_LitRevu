@@ -132,11 +132,14 @@ class FollowUserView(LoginRequiredMixin, View):
                 messages.error(request, "You cannot follow a superuser.")
                 return redirect('subscriptions')
             
-            # Create a new follow relationship.
-            UserFollows.objects.create(user=request.user, followed_user=user_to_follow)
+            # Check if the follow relationship already exists
+            if UserFollows.objects.filter(user=request.user, followed_user=user_to_follow).exists():
+                messages.error(request, f"You are already following {username_to_follow}!")
+            else:
+                # Create a new follow relationship.
+                UserFollows.objects.create(user=request.user, followed_user=user_to_follow)
+                messages.success(request, f"You are now following {user_to_follow.username}!")
 
-            # Send a success message to the user.
-            messages.success(request, f"You are now following {user_to_follow.username}!")
         except CustomUser.DoesNotExist:
             # Send an error message if the user to follow does not exist.
             messages.error(request, f"The user {username_to_follow} does not exist.")

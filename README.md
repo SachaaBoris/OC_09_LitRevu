@@ -37,7 +37,7 @@ WebApp django permettant de donner son avis ou de demander un avis sur un livre.
 	| Sarma | igotapass19 |
 	| Administrator | 123456789 |
 	
-	Par defaut, ces comptes sont abonnés et peuvent voir les publications de :  
+	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 	| Toto | X |  |  |  |  | X |  |
@@ -47,6 +47,12 @@ WebApp django permettant de donner son avis ou de demander un avis sur un livre.
 	| Maïté |  |  | X |  | X | X |  |
 	| Sarma |  |  |  |  |  | X |  |
 	| Administrator | X | X | X | X | X | X | X |  
+	
+	Permissions par défaut :  
+	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts |
+	| :---: | :---: | :---: | :---: | :---: | :---: |
+	| CustomUser | X | X | X | X |  |
+	| Administrator |  |  |  |  | X |  
   
 ---  
   

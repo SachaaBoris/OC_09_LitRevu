@@ -41,9 +41,9 @@
 					<label for="image-input" class="form-label">Book Cover</label>
 					<div class="cover-preview m-auto mb-3">
 						{% if ticket.image %}
-							<img id="image-preview" src="{{ ticket.image.url }}" alt="Image Preview" style="width: 100%; height: auto;">
+							<img id="image-preview" src="{{ ticket.image.url }}" alt="Image Preview" style="width: 100%; height: 100%;">
 						{% else %}
-							<img id="image-preview" src="" alt="Image Preview" style="display: none; width: 100%; height: auto;">
+							<img id="image-preview" src="" alt="Image Preview" style="display: none; width: 100%; height: 100%;">
 						{% endif %}
 					</div>
 					<!-- Book Cover -->
