@@ -27,7 +27,8 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
     Toujours dans la console et à la racine du script, tapez la commande : `py litrevu/manage.py runserver`  
 	Rendez-vous dans votre navigateur et allez à l'adresse :  
 	http://127.0.0.1:8000 ou http://localhost:8000/  
-	
+  
+  
 	Vous pouvez désormais créer un compte et utiliser l'application.  
   
 	Cinq comptes demo sont fournis :  
@@ -42,6 +43,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Administrator | 123456789 |
   
   
+  
 	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -54,11 +56,13 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Administrator | X | X | X | X | X | X | X |  
   
   
+  
 	Permissions par défaut :  
 	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 	| CustomUser | X | X | X | X |  |  |
 	| Administrator |  |  |  |  | X | X |  
+  
   
   
 # ● Etapes supplémentaires facultatives  
