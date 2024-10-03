@@ -42,7 +42,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Sarma | igotapass19 |
 	| Administrator | 123456789 |
   
-  
+<br/>
   
 	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
@@ -55,7 +55,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Sarma |  |  |  |  |  | X |  |
 	| Administrator | X | X | X | X | X | X | X |  
   
-  
+<br/>
   
 	Permissions par défaut :  
 	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
@@ -63,7 +63,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| CustomUser | X | X | X | X |  |  |
 	| Administrator |  |  |  |  | X | X |  
   
-  
+<br/>
   
 # ● Etapes supplémentaires facultatives  
 5. Démarrer une nouvelle BDD :  
