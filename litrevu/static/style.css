@@ -24,6 +24,7 @@ body {
 }
 
 .background1, .background2 {
+  background-color: #000000;
   height: 102vh;
   width: 100vw;
   position: fixed;
