@@ -29,6 +29,7 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	http://127.0.0.1:8000 ou http://localhost:8000/  
 	
 	Vous pouvez désormais créer un compte et utiliser l'application.  
+  
 	Cinq comptes demo sont fournis :  
 	| UserID | Password |
 	| :---: | :---: |
@@ -39,7 +40,8 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Maïté | igotapass20 |
 	| Sarma | igotapass19 |
 	| Administrator | 123456789 |
-	
+  
+  
 	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
 	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -50,12 +52,14 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
 	| Maïté |  |  | X |  | X | X |  |
 	| Sarma |  |  |  |  |  | X |  |
 	| Administrator | X | X | X | X | X | X | X |  
-	
+  
+  
 	Permissions par défaut :  
 	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
 	| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 	| CustomUser | X | X | X | X |  |  |
 	| Administrator |  |  |  |  | X | X |  
+  
   
 # ● Etapes supplémentaires facultatives  
 5. Démarrer une nouvelle BDD :  
