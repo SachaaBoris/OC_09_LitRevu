@@ -30,39 +30,39 @@ Elle intégre un système d'authentification, d'actualitées et d'abonnements.
   
 :black_circle:  
   
-	Vous pouvez désormais créer un compte et utiliser l'application.  
+Vous pouvez désormais créer un compte et utiliser l'application.  
   
-	Cinq comptes demo sont fournis :  
-	| UserID | Password |
-	| :---: | :---: |
-	| Toto | igotapass24 |
-	| Michel56 | igotapass23 |
-	| Starlette | igotapass22 |
-	| Darkdev | igotapass21 |
-	| Maïté | igotapass20 |
-	| Sarma | igotapass19 |
-	| Administrator | 123456789 |
-  
-:black_circle:  
-  
-	Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
-	|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
-	| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-	| Toto | X |  |  |  |  | X |  |
-	| Michel56 | X | X | X | X | X | X |  |
-	| Starlette | X | X | X |  |  | X |  |
-	| Darkdev | X | X | X | X |  | X |  |
-	| Maïté |  |  | X |  | X | X |  |
-	| Sarma |  |  |  |  |  | X |  |
-	| Administrator | X | X | X | X | X | X | X |  
+Cinq comptes demo sont fournis :  
+| UserID | Password |
+| :---: | :---: |
+| Toto | igotapass24 |
+| Michel56 | igotapass23 |
+| Starlette | igotapass22 |
+| Darkdev | igotapass21 |
+| Maïté | igotapass20 |
+| Sarma | igotapass19 |
+| Administrator | 123456789 |
   
 :black_circle:  
   
-	Permissions par défaut :  
-	| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
-	| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-	| CustomUser | X | X | X | X |  |  |
-	| Administrator |  |  |  |  | X | X |  
+Par defaut, ces comptes sont abonnés a et peuvent voir les publications de :  
+|   | Toto | Michel56 | Starlette | Darkdev | Maïté | Sarma | Administrator |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Toto | X |  |  |  |  | X |  |
+| Michel56 | X | X | X | X | X | X |  |
+| Starlette | X | X | X |  |  | X |  |
+| Darkdev | X | X | X | X |  | X |  |
+| Maïté |  |  | X |  | X | X |  |
+| Sarma |  |  |  |  |  | X |  |
+| Administrator | X | X | X | X | X | X | X |  
+  
+:black_circle:  
+  
+Permissions par défaut :  
+| User | Can follow / unfollow other users | Can Post Reviews and Tickets | Can update own posts | Can delete own posts | Can delete others posts | Can delete Users |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| CustomUser | X | X | X | X |  |  |
+| Administrator |  |  |  |  | X | X |  
   
 :black_circle:  
   
