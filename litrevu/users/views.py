@@ -9,8 +9,9 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import View
 from django.views.generic import FormView
-from django.utils.decorators import method_decorator
 from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+from django.db import IntegrityError
 from users import forms
 from users.models import UserFollows, CustomUser
 from django.conf import settings

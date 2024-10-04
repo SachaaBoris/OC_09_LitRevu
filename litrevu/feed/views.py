@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from django.views.generic.edit import FormView
