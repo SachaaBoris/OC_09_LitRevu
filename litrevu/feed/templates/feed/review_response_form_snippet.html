@@ -79,18 +79,19 @@
 								{% endfor %}
 							</div>
 						</div>
-						<div class="radioboutons-ontop">
+						<div class="radioboutons-ontop" data-rating="{{ form.rating.value }}">
 							<div class="form-check form-check-inline mt-1">
-								{% for i in "012345" %}
-									<input class="form-check-input radio-btns" type="radio" name="{{ form.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}" {% if form.rating.value == i %}checked{% endif %}>
+								{% for i in rating_range %}
+									<input class="form-check-input radio-btns" type="radio" name="{{ form.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}"/>
 								{% endfor %}
 							</div>
 						</div>
-						<script src="{% static 'star-form.js' %}"></script>
 						{% if form.rating.errors %}
 							<div class="text-danger">{{ form.rating.errors.0 }}</div>
 						{% endif %}
 					</div>
+					<img src="{% static 'star_full.png' %}" id="id_star_0" style="display:none;"></img>
+					<script src="{% static 'star-form.js' %}"></script>
 				</div>
 				
 				<!-- Review Body -->

@@ -24,7 +24,6 @@ body {
 }
 
 .background1, .background2 {
-  background-color: #000000;
   height: 102vh;
   width: 100vw;
   position: fixed;
@@ -88,6 +87,7 @@ body {
 }
 
 .cover-preview {
+	background: repeating-linear-gradient(45deg, #e1e8ed, #e1e8ed 10px, #EDF0F2 10px, #EDF0F2 20px);
 	width:100px;
 	height:150px;
 }

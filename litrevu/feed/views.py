@@ -210,10 +210,12 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("posts")
 
     def get_context_data(self, **kwargs):
+        rating_range = range(6)
         context = super().get_context_data(**kwargs)
         context['ticket'] = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-response"
+        context['rating_range'] = rating_range
         return context
 
     def form_valid(self, form):
@@ -250,9 +252,11 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self):
         context = super().get_context_data()
         review = self.get_object()
+        rating_range = range(6)
         context['ticket'] = review.ticket
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-update"
+        context['rating_range'] = rating_range
         return context
 
 
@@ -283,11 +287,13 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('feed')
 
     def get_context_data(self, **kwargs):
+        rating_range = range(6)
         context = super().get_context_data(**kwargs)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(self.request.POST or None)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-create"
+        context['rating_range'] = rating_range
         return context
 
     def form_valid(self, form):

@@ -87,43 +87,30 @@
 				
 				<!-- Review Rating -->
 				<div class="mb-3 text-start flex-grow-1">
-					<label class="form-label">Rating :    &nbsp;&nbsp;&nbsp;&nbsp; ( W I P )</label>
+					<label class="form-label">Rating :</label>
 					<div class="radioboutons-below" data-star-empty="{% static 'star_empty.png' %}" data-star-full="{% static 'star_full.png' %}">
 						<div class="d-inline-block mt-1">
 							<img src="" id="id_star_0" style="width:5px;"></img>
-							<img src="{% static 'star_empty.png' %}" id="id_star_1" style="width:16px;"></img>
-							<img src="{% static 'star_empty.png' %}" id="id_star_2" style="width:16px;"></img>
-							<img src="{% static 'star_empty.png' %}" id="id_star_3" style="width:16px;"></img>
-							<img src="{% static 'star_empty.png' %}" id="id_star_4" style="width:16px;"></img>
-							<img src="{% static 'star_empty.png' %}" id="id_star_5" style="width:16px;"></img>
+							{% for i in "12345" %}
+								<img src="{% static 'star_empty.png' %}" class="star" id="id_star_{{ i }}"></img>
+							{% endfor %}
 						</div>
 					</div>
-					<div class="radioboutons-ontop">
+					<div class="radioboutons-ontop" data-rating="{{ form2.rating.value }}">
 						<div class="form-check form-check-inline mt-1">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="0" id="id_rating_0">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="1" id="id_rating_1">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="2" id="id_rating_2">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="3" id="id_rating_3">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="4" id="id_rating_4">
-							<input class="form-check-input radio-btns" type="radio" name="rating" value="5" id="id_rating_5">
+							{% for i in rating_range %}
+								<input class="form-check-input radio-btns" type="radio" name="{{ form2.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}"/>
+							{% endfor %}
 						</div>
-					</div>
-					
-					<script src="{% static 'star-form.js' %}"></script>
-					
-					<div>
-						{% for i in "012345" %}
-							<div class="form-check form-check-inline mt-1">
-								<input class="form-check-input" type="radio" name="{{ form2.rating.name }}" value="{{ i }}" id="id_rating_{{ i }}" {% if form2.rating.value == i|add:0 %}checked{% endif %}>
-								<label class="form-check-label" for="id_rating_{{ i }}">{{ i }}</label>
-							</div>
-						{% endfor %}
 					</div>
 					{% if form2.rating.errors %}
 						<div class="text-danger">{{ form2.rating.errors.0 }}</div>
 					{% endif %}
 				</div>
+				<img src="{% static 'star_full.png' %}" id="id_star_0" style="display:none;"></img>
+				<script src="{% static 'star-form.js' %}"></script>
 			</div>
+			
 			
 			<!-- Review Body -->
                <div class="mb-3 text-start">

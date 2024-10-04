@@ -1,7 +1,7 @@
 # OC_09 LitRevu :notebook:   
   
 # ● Description du projet  
-WebApp django permettant de donner son avis ou de demander un avis sur un livre.  
+WebApp django permettant à une communauté d'utilisateurs de donner son avis ou de demander un avis sur un livre.  
 Elle intégre un système d'authentification, d'actualitées et d'abonnements.  
   
 # ● Comment installer et démarrer l'application  
