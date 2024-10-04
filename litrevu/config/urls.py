@@ -41,33 +41,64 @@ from config import settings
 urlpatterns = [
     # Admin URL
     path('admin/', admin.site.urls),
-    
+
     # Explicit login, signup, and logout paths
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
     path("logout/", LogoutUserView.as_view(), name="logout"),
     path('follow/', FollowUserView.as_view(), name='follow-user'),
     path('follow/<int:pk>/', FollowUserView.as_view(), name='follow-user'),
-    path('unfollow/<int:pk>/', UnfollowUserView.as_view(), name='unfollow-user'),
+    path(
+        'unfollow/<int:pk>/',
+        UnfollowUserView.as_view(),
+        name='unfollow-user'),
     path('subscriptions/', FollowedUsersView.as_view(), name='subscriptions'),
-    
+
     # Explicit tickets & feed paths
     path("feed/", FeedView.as_view(), name="feed"),
     path("posts/", PostView.as_view(), name="posts"),
     path("tickets/create/", TicketCreateView.as_view(), name="ticket-create"),
-    path("tickets/create/with-review/", CreateTicketAndReviewView.as_view(), name="ticket-review-create"),
-    path("tickets/<int:pk>/update/", TicketUpdateView.as_view(), name="ticket-update"),
-    path("tickets/<int:pk>/delete/", TicketDeleteView.as_view(), name="ticket-delete"),
-    path("reviews/create/<int:ticket_id>/", ReviewCreateView.as_view(), name="review-create"),
-    path("reviews/<int:pk>/update/", ReviewUpdateView.as_view(), name="review-update"),
-    path("reviews/<int:pk>/delete/", ReviewDeleteView.as_view(), name="review-delete"),
-    
+    path(
+        "tickets/create/with-review/",
+        CreateTicketAndReviewView.as_view(),
+        name="ticket-review-create"),
+    path(
+        "tickets/<int:pk>/update/",
+        TicketUpdateView.as_view(),
+        name="ticket-update"),
+    path(
+        "tickets/<int:pk>/delete/",
+        TicketDeleteView.as_view(),
+        name="ticket-delete"),
+    path(
+        "reviews/create/<int:ticket_id>/",
+        ReviewCreateView.as_view(),
+        name="review-create"),
+    path(
+        "reviews/<int:pk>/update/",
+        ReviewUpdateView.as_view(),
+        name="review-update"),
+    path(
+        "reviews/<int:pk>/delete/",
+        ReviewDeleteView.as_view(),
+        name="review-delete"),
+
     # Redirect root to login
-    path("", RedirectView.as_view(pattern_name='login', permanent=False), name="root-redirect"),
-    
+    path(
+        "",
+        RedirectView.as_view(
+            pattern_name='login',
+            permanent=False),
+        name="root-redirect"),
+
     # Catch-all route for any non-matching URLs
-    re_path(r'^.*/$', RedirectView.as_view(pattern_name='login', permanent=False)),
+    re_path(
+        r'^.*/$',
+        RedirectView.as_view(
+            pattern_name='login',
+            permanent=False)),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

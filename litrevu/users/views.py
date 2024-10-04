@@ -24,10 +24,10 @@ class LoginView(View):
         form = self.form_class()
         message = ''
         context = {
-                "form": form,
-                "message": message,
-                "hide_navbar": True
-            }
+            "form": form,
+            "message": message,
+            "hide_navbar": True
+        }
         return render(request, self.template_name, context)
 
     @method_decorator(require_POST)
@@ -55,8 +55,8 @@ class LoginView(View):
 
 class LogoutUserView(LogoutView):
     next_page = reverse_lazy("login")
-    
-    #def dispatch(self, request, *args, **kwargs):
+
+    # def dispatch(self, request, *args, **kwargs):
     #    messages.add_message(request, messages.SUCCESS, "Vous avez été déconnecté.")
     #    return super().dispatch(request, *args, **kwargs)
 
@@ -77,7 +77,7 @@ class SignupView(FormView):
 
         # Redirect to the URL specified as the login destination in settings.
         return super().form_valid(form)
-    
+
     def get_context_data(self, **kwargs):
         # Obtenir le contexte par défaut du FormView
         context = super().get_context_data(**kwargs)
@@ -87,6 +87,7 @@ class SignupView(FormView):
 
         return context
 
+
 class FollowedUsersView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -94,8 +95,10 @@ class FollowedUsersView(LoginRequiredMixin, View):
         # Obtenir tous les suivis de l'utilisateur
         followed_users = UserFollows.objects.filter(user=user)
 
-        # Créer une liste des utilisateurs suivis (pour faciliter la vérification)
-        followed_user_ids = followed_users.values_list('followed_user_id', flat=True)
+        # Créer une liste des utilisateurs suivis (pour faciliter la
+        # vérification)
+        followed_user_ids = followed_users.values_list(
+            'followed_user_id', flat=True)
 
         # Créer un contexte avec les utilisateurs suivis
         context = {
@@ -105,7 +108,9 @@ class FollowedUsersView(LoginRequiredMixin, View):
 
         if settings.ALLOW_USER_SEE_ALL_USERS:
             CustomUser = get_user_model()
-            all_users = CustomUser.objects.filter(is_superuser=False).exclude(id=user.id).order_by('username')
+            all_users = CustomUser.objects.filter(
+                is_superuser=False).exclude(
+                id=user.id).order_by('username')
             context['all_users'] = all_users
 
         # Rendre la page avec le contexte
@@ -125,27 +130,36 @@ class FollowUserView(LoginRequiredMixin, View):
 
         try:
             # Retrieve the user to follow from the database.
-            user_to_follow = CustomUser.objects.get(username=username_to_follow)
-            
+            user_to_follow = CustomUser.objects.get(
+                username=username_to_follow)
+
             # Hide superUsers
             if user_to_follow.is_superuser:
                 messages.error(request, "You cannot follow a superuser.")
                 return redirect('subscriptions')
-            
+
             # Check if the follow relationship already exists
-            if UserFollows.objects.filter(user=request.user, followed_user=user_to_follow).exists():
-                messages.error(request, f"You are already following {username_to_follow}!")
+            if UserFollows.objects.filter(
+                    user=request.user, followed_user=user_to_follow).exists():
+                messages.error(
+                    request, f"You are already following {username_to_follow}!")
             else:
                 # Create a new follow relationship.
-                UserFollows.objects.create(user=request.user, followed_user=user_to_follow)
-                messages.success(request, f"You are now following {user_to_follow.username}!")
+                UserFollows.objects.create(
+                    user=request.user, followed_user=user_to_follow)
+                messages.success(
+                    request, f"You are now following {
+                        user_to_follow.username}!")
 
         except CustomUser.DoesNotExist:
             # Send an error message if the user to follow does not exist.
-            messages.error(request, f"The user {username_to_follow} does not exist.")
+            messages.error(
+                request, f"The user {username_to_follow} does not exist.")
         except IntegrityError:
-            # Send an error message if the following relationship already exists.
-            messages.error(request, f"You are already following {username_to_follow}!")
+            # Send an error message if the following relationship already
+            # exists.
+            messages.error(
+                request, f"You are already following {username_to_follow}!")
         # Redirect the user back to the 'abonnements' page.
         return redirect('subscriptions')
 
@@ -153,7 +167,8 @@ class FollowUserView(LoginRequiredMixin, View):
 class UnfollowUserView(LoginRequiredMixin, View):
     @method_decorator(require_POST)
     def post(self, request, pk, *args, **kwargs):
-        follow = UserFollows.objects.filter(user=request.user, followed_user_id=pk).first()
+        follow = UserFollows.objects.filter(
+            user=request.user, followed_user_id=pk).first()
         # Check if the following relationship is found.
         if follow:
             # Save the followed user's username for use in the message.
@@ -163,9 +178,11 @@ class UnfollowUserView(LoginRequiredMixin, View):
             follow.delete()
 
             # Send a success message to the user.
-            messages.success(request, f"You have unfollowed {followed_username}.")
+            messages.success(
+                request, f"You have unfollowed {followed_username}.")
         else:
-            # If the relationship is not found, send an error message to the user.
+            # If the relationship is not found, send an error message to the
+            # user.
             messages.error(request, "User not found.")
 
         # Redirect the user back to the 'abonnements' page.

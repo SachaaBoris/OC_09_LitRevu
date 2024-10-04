@@ -20,67 +20,86 @@ from feed.forms import ReviewForm
 
 class FeedView(LoginRequiredMixin, View):
     template_name = "feed/feed.html"
-    
+
     def get_reviewed_ticket_ids(self, user):
         #  IDs of tickets reviewed by user
         if user.is_superuser:
-            return Review.objects.values_list('ticket_id', flat=True).distinct()
+            return Review.objects.values_list(
+                'ticket_id', flat=True).distinct()
         else:
             # IDs des tickets reviewés par l'utilisateur
-            reviewed_by_user = Review.objects.filter(user=user).values_list('ticket_id', flat=True)
+            reviewed_by_user = Review.objects.filter(
+                user=user).values_list(
+                'ticket_id', flat=True)
 
             # IDs des tickets créés par l'utilisateur qui ont été reviewés
-            user_tickets = Ticket.objects.filter(user=user).values_list('id', flat=True)
-            reviewed_user_tickets = Review.objects.filter(ticket_id__in=user_tickets).values_list('ticket_id', flat=True)
+            user_tickets = Ticket.objects.filter(
+                user=user).values_list(
+                'id', flat=True)
+            reviewed_user_tickets = Review.objects.filter(
+                ticket_id__in=user_tickets).values_list(
+                'ticket_id', flat=True)
 
             # Convertir les querysets en sets et combiner
-            combined_ticket_ids = set(reviewed_by_user) | set(reviewed_user_tickets)
+            combined_ticket_ids = set(
+                reviewed_by_user) | set(reviewed_user_tickets)
 
             # Retourner la liste combinée des IDs de tickets
             return list(combined_ticket_ids)
-        
-    
+
     def get_users_viewable_reviews(self, user):
         if user.is_superuser:
             # Return all reviews if the user is a superuser
             return Review.objects.all()
         else:
             # IDs of users followed by the user
-            followed_users = list(user.following.values_list('followed_user', flat=True))
+            followed_users = list(
+                user.following.values_list(
+                    'followed_user', flat=True))
             followed_users.append(user.id)  # Add the user themselves
 
             # Get reviews from users the current user follows
-            reviews_from_followed_users = Review.objects.filter(user_id__in=followed_users)
+            reviews_from_followed_users = Review.objects.filter(
+                user_id__in=followed_users)
 
             # Get tickets posted by the user and users followed by the user
-            followed_users_tickets = Ticket.objects.filter(user_id__in=followed_users).values_list('id', flat=True)
+            followed_users_tickets = Ticket.objects.filter(
+                user_id__in=followed_users).values_list(
+                'id', flat=True)
 
-            # Get reviews linked to the user's tickets and tickets posted by followed users
-            reviews_on_followed_users_tickets = Review.objects.filter(ticket_id__in=followed_users_tickets)
+            # Get reviews linked to the user's tickets and tickets posted by
+            # followed users
+            reviews_on_followed_users_tickets = Review.objects.filter(
+                ticket_id__in=followed_users_tickets)
 
-            # Combine reviews from followed users and reviews on followed users' tickets
+            # Combine reviews from followed users and reviews on followed
+            # users' tickets
             combined_reviews = reviews_from_followed_users | reviews_on_followed_users_tickets
 
             return combined_reviews.distinct()
-    
+
     def get_users_viewable_tickets(self, user):
         if user.is_superuser:
             # Return all tickets if the user is a superuser
             return Ticket.objects.all()
         else:
-             # Return tickets from users followed by the user
-            followed_users = list(user.following.values_list('followed_user', flat=True))
+            # Return tickets from users followed by the user
+            followed_users = list(
+                user.following.values_list(
+                    'followed_user', flat=True))
             followed_users.append(user.id)
-            
+
             # Get tickets that have been reviewed
-            reviewed_ticket_ids = Review.objects.values_list('ticket_id', flat=True)
-            
+            reviewed_ticket_ids = Review.objects.values_list(
+                'ticket_id', flat=True)
+
             # Filter tickets from followed users excluding the reviewed tickets
-            return Ticket.objects.filter(user_id__in=followed_users).exclude(id__in=reviewed_ticket_ids)
-    
+            return Ticket.objects.filter(user_id__in=followed_users).exclude(
+                id__in=reviewed_ticket_ids)
+
     def get(self, request, *args, **kwargs):
         user = request.user
-        
+
         # Retrieve and annotate reviews and tickets visible to the user
         reviews = self.get_users_viewable_reviews(request.user)
         reviews = reviews.annotate(content_type=Value('REVIEW', CharField()))
@@ -90,10 +109,10 @@ class FeedView(LoginRequiredMixin, View):
         # Get IDs of tickets that have been reviewed
         reviewed_ticket_ids = self.get_reviewed_ticket_ids(user)
         print(f'{reviewed_ticket_ids}')
-        
+
         # Remember previous page
         previous_url = request.META.get('HTTP_REFERER', None)
-        
+
         # Merge and sort posts
         posts = sorted(
             chain(reviews, tickets),
@@ -115,14 +134,16 @@ class PostView(LoginRequiredMixin, View):
 
     def get(self, request):
         # Retrieve tickets created by the user, ordered by creation time
-        user_tickets = Ticket.objects.filter(user=request.user).order_by('-time_created')
+        user_tickets = Ticket.objects.filter(
+            user=request.user).order_by('-time_created')
 
         # Retrieve reviews created by the user, ordered by creation time
-        user_reviews = Review.objects.filter(user=request.user).order_by('-time_created')
-        
+        user_reviews = Review.objects.filter(
+            user=request.user).order_by('-time_created')
+
         # Remember previous page
         previous_url = request.META.get('HTTP_REFERER', None)
-        
+
         # Render the page with the fetched tickets and reviews
         return render(request, self.template_name, context={
             'page': "posts",
@@ -138,7 +159,8 @@ class TicketCreateView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy("feed")
 
     def form_valid(self, form):
-        # Save form data into a ticket instance without committing to the database yet
+        # Save form data into a ticket instance without committing to the
+        # database yet
         ticket = form.save(commit=False)
 
         # Associate the current user as the ticket's creator
@@ -149,7 +171,7 @@ class TicketCreateView(LoginRequiredMixin, FormView):
 
         # Redirect to the success URL
         return super().form_valid(form)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
@@ -169,13 +191,14 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
 
         # Check that the user requesting the update is the ticket creator
         if ticket.user != self.request.user:
-            raise PermissionDenied("You do not have permission to edit this ticket.")
+            raise PermissionDenied(
+                "You do not have permission to edit this ticket.")
         return ticket
 
     def form_valid(self, form):
         # Save the form and redirect to the success URL
         return super().form_valid(form)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
@@ -192,17 +215,19 @@ class TicketDeleteView(LoginRequiredMixin, DeleteView):
         # Retrieve the ticket instance
         ticket = super().get_object(queryset)
 
-        # Validate that the user requesting the deletion is the ticket's creator
+        # Validate that the user requesting the deletion is the ticket's
+        # creator
         if ticket.user != self.request.user:
-            raise PermissionDenied("You do not have permission to delete this ticket.")
+            raise PermissionDenied(
+                "You do not have permission to delete this ticket.")
         return ticket
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         return context
 
- 
+
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
@@ -212,7 +237,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         rating_range = range(6)
         context = super().get_context_data(**kwargs)
-        context['ticket'] = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
+        context['ticket'] = get_object_or_404(
+            Ticket, pk=self.kwargs.get('ticket_id'))
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-response"
         context['rating_range'] = rating_range
@@ -223,7 +249,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         print("Form Data:", form.cleaned_data)
         # Assign the requesting user and related ticket to the form instance
         form.instance.user = self.request.user
-        form.instance.ticket = get_object_or_404(Ticket, pk=self.kwargs.get('ticket_id'))
+        form.instance.ticket = get_object_or_404(
+            Ticket, pk=self.kwargs.get('ticket_id'))
 
         # Proceed to default form_valid behavior (save and redirect)
         return super().form_valid(form)
@@ -240,7 +267,8 @@ class ReviewUpdateView(LoginRequiredMixin, UpdateView):
         review = super().get_object(queryset)
         # Validate that the user requesting the update is the review's creator
         if review.user != self.request.user:
-            raise PermissionDenied("You do not have permission to edit this review")
+            raise PermissionDenied(
+                "You do not have permission to edit this review")
         return review
 
     def form_valid(self, form):
@@ -269,11 +297,13 @@ class ReviewDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         review = super().get_object(queryset)
 
-        # Validate that the user requesting the deletion is the review's creator
+        # Validate that the user requesting the deletion is the review's
+        # creator
         if review.user != self.request.user:
-            raise PermissionDenied("You do not have permission to delete this review")
+            raise PermissionDenied(
+                "You do not have permission to delete this review")
         return review
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
@@ -290,7 +320,8 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
         rating_range = range(6)
         context = super().get_context_data(**kwargs)
         if 'form2' not in context:
-            context['form2'] = self.second_form_class(self.request.POST or None)
+            context['form2'] = self.second_form_class(
+                self.request.POST or None)
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-create"
         context['rating_range'] = rating_range
@@ -315,7 +346,8 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
             # Create, but don't save the new review instance yet
             review = form2.save(commit=False)
 
-            # Assign the current user and associated ticket to the new review instance
+            # Assign the current user and associated ticket to the new review
+            # instance
             review.ticket = ticket
             review.user = self.request.user
 

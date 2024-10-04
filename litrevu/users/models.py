@@ -13,16 +13,16 @@ class CustomUser(AbstractUser):
 
 class UserFollows(models.Model):
     user: CustomUser = models.ForeignKey(
-            settings.AUTH_USER_MODEL,
-            on_delete=models.CASCADE,
-            related_name='following'
-        )
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='following'
+    )
 
     followed_user: CustomUser = models.ForeignKey(
-            settings.AUTH_USER_MODEL,
-            on_delete=models.CASCADE,
-            related_name='followed_by'
-        )
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='followed_by'
+    )
 
     class Meta:
         unique_together = ('user', 'followed_user')
