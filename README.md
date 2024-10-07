@@ -1,8 +1,7 @@
 # OC_09 LitRevu :notebook:   
   
 # ● Description du projet  
-WebApp django permettant à une communauté d'utilisateurs de donner son avis ou de demander un avis sur un livre.  
-Elle intégre un système d'authentification, d'actualitées et d'abonnements.  
+WebApp django permettant à une communauté d'utilisateurs de donner son avis ou de demander un avis sur un livre. Elle intégre un système d'authentification, d'actualitées et d'abonnements.  
   
 # ● Comment installer et démarrer l'application  
 1. Prérequis :  
@@ -81,6 +80,11 @@ Permissions par défaut :
   ``` 
 	py litrevu/manage.py createsuperuser
   ```  
+  
+7. Noubliez pas de switcher ces variables dans les settings du projet avant mise en production :  
+	DEBUG = False  
+	CSRF_COOKIE_SECURE = True  
+	SESSION_COOKIE_SECURE = True  
   
 :black_circle:  
   
