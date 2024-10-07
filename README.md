@@ -5,20 +5,21 @@ WebApp django permettant à une communauté d'utilisateurs de donner son avis ou
   
 <details>
   <summary>Screen previews</summary>
+  
 	<details>
-		<summary>Log In</summary>
+		:camera:<summary>Log In</summary>
 			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/blob/main/previews/LITRevu 01 - Log in.png" alt="Log In preview"/>
 	</details>
 	<details>
-		<summary>Sign Up</summary>
+		:camera:<summary>Sign Up</summary>
 			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/blob/main/previews/LITRevu 02 - Sign Up.png" alt="Sign Up preview"/>
 	</details>
 	<details>
-		<summary>Feed</summary>
+		:camera:<summary>Feed</summary>
 			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/blob/main/previews/LITRevu 03 - Feed.png" alt="Feed preview"/>
 	</details>
 	<details>
-		<summary>Create Ticket</summary>
+		:camera:<summary>Create Ticket</summary>
 			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/blob/main/previews/LITRevu 04 - Create Ticket.png" alt="Create Ticket preview"/>
 	</details>
 	<details>
