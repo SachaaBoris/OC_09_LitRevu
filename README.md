@@ -3,6 +3,43 @@
 # ● Description du projet  
 WebApp django permettant à une communauté d'utilisateurs de donner son avis ou de demander un avis sur un livre. Elle intégre un système d'authentification, d'actualitées et d'abonnements.  
   
+<details>
+  <summary>Screen previews</summary>
+	<details>
+		<summary>Log In</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 01 - Log in.png" alt="Log In preview"/>
+	</details>
+	<details>
+		<summary>Sign Up</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 02 - Sign Up.png" alt="Sign Up preview"/>
+	</details>
+	<details>
+		<summary>Feed</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 03 - Feed.png" alt="Feed preview"/>
+	</details>
+	<details>
+		<summary>Create Ticket</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 04 - Create Ticket.png" alt="Create Ticket preview"/>
+	</details>
+	<details>
+		<summary>Create Ticket & Review</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 05 - Create Ticket and Review.png" alt="Create Ticket & Review preview"/>
+	</details>
+	<details>
+		<summary>Submit Review</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 06 - Create Review.png" alt="Submit Review preview"/>
+	</details>
+	<details>
+		<summary>Posts</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 07 - Posts.png" alt="Posts preview"/>
+	</details>
+	<details>
+		<summary>Subscriptions</summary>
+			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/previews/LITRevu 08 - Abonnements.png" alt="Subscriptions preview"/>
+	</details>
+</details>
+
+  
 # ● Comment installer et démarrer l'application  
 1. Prérequis :  
     Avoir Python 3 installé  
