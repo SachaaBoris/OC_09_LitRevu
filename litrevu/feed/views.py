@@ -107,7 +107,6 @@ class FeedView(LoginRequiredMixin, View):
 
         # Get IDs of tickets that have been reviewed
         reviewed_ticket_ids = self.get_reviewed_ticket_ids(user)
-        print(f'{reviewed_ticket_ids}')
 
         # Remember previous page
         previous_url = request.META.get('HTTP_REFERER', None)
@@ -244,8 +243,6 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        print("form_valid called")
-        print("Form Data:", form.cleaned_data)
         # Assign the requesting user and related ticket to the form instance
         form.instance.user = self.request.user
         form.instance.ticket = get_object_or_404(
