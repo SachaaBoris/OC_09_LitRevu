@@ -32,10 +32,6 @@
 			<div class="flex-grow-1 p-3 border text-justify inner-content mb-2">{{ post.description|linebreaksbr }}</div>
 			{% if not user.is_superuser %}
 				{% if page == "feed" %}
-					<!--
-					IF NOT ALREADY REVIEWED + context = Feed, put [ Add review ] btn
-					IF Ticket User = Self + context = Posts, put [ Update & delete ] btn
-					--> 
 					<div class="d-flex justify-content-end mt-2">
 						<a href="{% url 'review-create' ticket_id=post.id %}" 
 						   class="btn btn-primary btn-content align-self-end d-flex justify-content-center align-items-center">

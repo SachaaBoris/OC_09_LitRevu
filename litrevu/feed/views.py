@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import View
 from django.views.generic.edit import FormView
 from django.views.generic.edit import CreateView
@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import CharField
 from django.db.models import Value
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from itertools import chain
 from feed.models import Ticket
 from feed.models import Review
@@ -189,9 +189,16 @@ class TicketUpdateView(LoginRequiredMixin, UpdateView):
 
         # Check that the user requesting the update is the ticket creator
         if ticket.user != self.request.user:
-            raise PermissionDenied(
-                "You do not have permission to edit this ticket.")
+            return None
         return ticket
+
+    def get(self, request, *args, **kwargs):
+        ticket = self.get_object()
+
+        if ticket is None:
+            # Redirect to posts if the user does not have permission
+            return redirect('posts')
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Save the form and redirect to the success URL
@@ -216,9 +223,16 @@ class TicketDeleteView(LoginRequiredMixin, DeleteView):
         # Validate that the user requesting the deletion is the ticket's
         # creator
         if ticket.user != self.request.user:
-            raise PermissionDenied(
-                "You do not have permission to delete this ticket.")
+            return None
         return ticket
+
+    def get(self, request, *args, **kwargs):
+        ticket = self.get_object()
+
+        if ticket is None:
+            # Redirect to posts if the user does not have permission
+            return redirect('posts')
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -235,20 +249,35 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         rating_range = range(6)
         context = super().get_context_data(**kwargs)
-        context['ticket'] = get_object_or_404(
+        ticket = get_object_or_404(
             Ticket, pk=self.kwargs.get('ticket_id'))
+
+        context = super().get_context_data(**kwargs)
+        context['ticket'] = ticket
         context['previous_url'] = self.request.META.get('HTTP_REFERER', None)
         context['page'] = "review-response"
         context['rating_range'] = rating_range
         return context
 
-    def form_valid(self, form):
-        # Assign the requesting user and related ticket to the form instance
-        form.instance.user = self.request.user
-        form.instance.ticket = get_object_or_404(
+    def get(self, request, *args, **kwargs):
+        ticket = get_object_or_404(
             Ticket, pk=self.kwargs.get('ticket_id'))
 
-        # Proceed to default form_valid behavior (save and redirect)
+        # Vérifier si le billet a déjà été critiqué avant de continuer
+        if Review.objects.filter(ticket=ticket).exists():
+            return redirect(reverse('feed'))
+
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        ticket = get_object_or_404(
+            Ticket, pk=self.kwargs.get('ticket_id'))
+        
+        # Assigner l'user et le ticket à l'instance
+        form.instance.user = self.request.user
+        form.instance.ticket = ticket
+
+        # Save and redirect
         return super().form_valid(form)
 
 
