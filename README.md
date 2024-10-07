@@ -5,9 +5,8 @@ WebApp django permettant à une communauté d'utilisateurs de donner son avis ou
   
 <details>
   <summary>Screen previews</summary>
-  
 	<details>
-		<summary>Log In</summary>
+		:camera:<summary>Log In</summary>
 			<img src="https://github.com/SachaaBoris/OC_09_LitRevu/blob/main/previews/LITRevu 01 - Log in.png" alt="Log In preview"/>
 	</details>
 	<details>
