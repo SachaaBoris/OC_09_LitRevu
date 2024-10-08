@@ -179,6 +179,24 @@ nav, footer {
   background-color: #ededed;
 }
 
+@media (max-width: 992px) {
+  #navbarNav > ul {
+	min-width: 230px;
+	max-width: 260px;
+	text-align: center;
+	background-color: #748b9e;
+	border: 1px solid #ffffff;
+	border-radius: 5px;
+	padding: 15px;
+  }
+  .navbar_btn {
+    min-width: 200px;
+	background-color: #edf0f2;
+	border-radius: 5px;
+	padding: 5px;
+	margin: auto;
+  }
+}
 
 @media (max-width: 768px) {
   .responsive-logo {
