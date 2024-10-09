@@ -55,7 +55,7 @@ WebApp django permettant à une communauté d'utilisateurs de donner son avis ou
 	Rennomez .env.sample en .env  
   
 3. Installer l'environnement virtuel :  
-    Depuis votre console favorite, naviguez jusqu'au répertoire du script  
+    Depuis votre console favorite, naviguez jusqu'au répertoire du projet 
     Pour créer l'environnement virtuel rentrez la ligne de commande : `py -m venv ./venv`  
     Activez ensuite l'environnement virtuel en rentrant la commande : `venv\Scripts\activate`  
     Installer les requirements du projet avec la commande : `py -m pip install -r requirements.txt`  
