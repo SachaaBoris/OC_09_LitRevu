@@ -61,7 +61,7 @@ WebApp django permettant à une communauté d'utilisateurs de donner son avis ou
     Installer les requirements du projet avec la commande : `py -m pip install -r requirements.txt`  
   
 4. Démarrer le serveur :  
-    Toujours dans la console et à la racine du script, tapez la commande : `py litrevu/manage.py runserver`  
+    Toujours dans la console et à la racine du projet, tapez la commande : `py litrevu/manage.py runserver`  
 	Rendez-vous dans votre navigateur et allez à l'adresse :  
 	http://127.0.0.1:8000 ou http://localhost:8000/  
   
