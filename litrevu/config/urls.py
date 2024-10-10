@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from django.conf.urls import handler404, handler403
+from django.shortcuts import redirect
+from django.urls import reverse
 
 from users.views import LoginView
 from users.views import SignupView
@@ -98,6 +101,21 @@ urlpatterns = [
             pattern_name='login',
             permanent=False)),
 ]
+
+def custom_permission_denied_view(request, exception):
+    if request.user.is_authenticated:
+        return redirect(reverse('feed'))
+    else:
+        return redirect(reverse('login'))
+
+def custom_page_not_found_view(request, exception):
+    if request.user.is_authenticated:
+        return redirect(reverse('feed'))
+    else:
+        return redirect(reverse('login'))
+
+handler403 = custom_permission_denied_view
+handler404 = custom_page_not_found_view
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

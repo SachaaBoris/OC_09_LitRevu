@@ -353,34 +353,25 @@ class CreateTicketAndReviewView(LoginRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        # Create, but don't save the new ticket instance yet
-        ticket = form.save(commit=False)
-
-        # Assign the current user to the new ticket instance
-        ticket.user = self.request.user
-
-        # Save the ticket instance
-        ticket.save()
-
-        # Manually validate the second form
+        # Valider manuellement le deuxième formulaire (review)
         form2 = self.second_form_class(self.request.POST)
 
-        # Check the validity of the second form
-        if form2.is_valid():
+        # Vérifier si les deux formulaires sont valides
+        if form.is_valid() and form2.is_valid():
+            with transaction.atomic():
+                # Créer, mais ne pas encore enregistrer l'instance du ticket
+                ticket = form.save(commit=False)
+                ticket.user = self.request.user
+                ticket.save()
 
-            # Create, but don't save the new review instance yet
-            review = form2.save(commit=False)
+                # Créer, mais ne pas encore sauvegarder la review
+                review = form2.save(commit=False)
+                review.ticket = ticket
+                review.user = self.request.user
+                review.save()
 
-            # Assign the current user and associated ticket to the new review
-            # instance
-            review.ticket = ticket
-            review.user = self.request.user
-
-            # Save the review instance
-            review.save()
-
-            # Redirect to the success URL
-            return super().form_valid(form)
+                # Rediriger vers la success URL si tout est correct
+                return super().form_valid(form)
         else:
-            # If the second form is invalid, re-render the forms with the data
+            # Si l'un des formulaires est invalide, réafficher les formulaires avec les erreurs
             return self.form_invalid(form)
